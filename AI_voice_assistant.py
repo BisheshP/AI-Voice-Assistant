@@ -26,8 +26,8 @@ class Assistant:
         self.engine.setProperty('voice', self.voices[0].id) # 0=male, 1=female voice
         self.activationword = 'ranger' #single word to activate the software
 
-        #configure browser
-        #set the path
+        #configuring browser
+        #setting path
         self.edge_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
         webbrowser.register('edge', None, webbrowser.BackgroundBrowser(self.edge_path))
 
@@ -71,7 +71,6 @@ class Assistant:
                     if query[0] == 'wikipedia':
                         query = ' '.join(query[1:])
                         self.speak('Querying the universal databank.')
-                        #print(self.search_wikipedia(query))
                         self.speak(self.search_wikipedia(query))
                         
                     # wolfram Alpha
@@ -129,7 +128,7 @@ class Assistant:
 
     def parseCommand(self):
         listener = sr.Recognizer()
-        #print('Listening for a command...')
+        #self.speak('Listening for a command...')
 
         with sr.Microphone() as source:
             listener.phrase_threshold = 2
@@ -137,14 +136,10 @@ class Assistant:
 
         try:
             self.label.config(fg="red")
-            #print('Recognizing speech...')
             self.speak("recognizing speech...")
             query = listener.recognize_google(input_speech, language='en_gb')
-            #print(f'The input speech was: {query}')
         except Exception as exception:
-            #print('I did not quite catch that')
             self.speak('I did not quite catch that')
-            #print(exception)
             self.label.config(fg="balck")
             return 'None'
             
@@ -154,14 +149,13 @@ class Assistant:
     def search_wikipedia(self, query = ''):
         searchResults = wikipedia.search(query)
         if not searchResults:
-            #print('No wikipedia result')
+            self.speak('No wikipedia result')
             return 'No result received'
         try:
             wikiPage = wikipedia.page(searchResults[0])
 
         except wikipedia.DisambiguationError as error:
             wikiPage = wikipedia.page(error.options[0])
-        #print(wikiPage.title)
         wikiSummarry = str(wikiPage.summary)
         return wikiSummarry
 
@@ -207,15 +201,9 @@ class Assistant:
         inbox = outlook.GetDefaultFolder(6)
         messages = inbox.Items
         message = messages.GetLast()
-
-        # print(message.SenderName)
-        # print(message.subject)
         engine = pyttsx3.init()
         engine.say("You have an email from {}, Subject of the email is {}, This is what is written in the email: {}".format(message.SenderName, message.subject, message.body))
         engine.runAndWait()
-
-    # def create_backup(self):
-    #     backup.main()
 
     def list_files(self, page_size=10):
         try:
@@ -295,9 +283,7 @@ class Assistant:
 
         path = "F:/Voice-based AI Assistant/final/"
         myfiles = os.listdir(path)
-    
-        # my_drive.list_files()
-        
+               
         for item in myfiles:
             if item != ".git" and item != "__pycache__":
                 self.upload_file(item,path)
