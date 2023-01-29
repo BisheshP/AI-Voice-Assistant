@@ -101,8 +101,8 @@ class Assistant:
                         try:
                             self.create_backup()
                         except:
-                            # self.speak('Backup Created Successfully.')
-                            return None
+                            print(Exception)
+                            self.speak('Thankyou for waiting.')
                         self.speak('Backup Created Successfully.')
                         self.speak('Goodbye')
                         self.engine.stop()
@@ -299,7 +299,8 @@ class Assistant:
         # my_drive.list_files()
         
         for item in myfiles:
-            self.upload_file(item,path)
+            if item != ".git" and item != "__pycache__":
+                self.upload_file(item,path)
         
     
 bishesh = Assistant()
